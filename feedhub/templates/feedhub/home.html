@@ -1,0 +1,37 @@
+{% extends "feedhub/base.html" %}
+{% block content %}
+	{% for post in feed %}
+		<div class="container mb-3 py-2 _stpbx border-top rounded shadow-sm">
+				<div class="d-inline-flex border-bottom mb-2 p-2">
+					<img class="_usrlg" width="50px" height="50px" src="{{post.author.profile.image.url}}" alt="profile_pic">
+					<div>
+						<h2><a href="{% url 'feedhub:user-posts' post.author.username %}">{{ post.author }}</a></h2>
+						<small>Posted on - {{ post.date_posted|date:"F j, Y"}}</small>
+					</div>
+				</div>
+				<h3> <a href="{% url 'feedhub:feed-dtl' post.id %}">{{post.title}}</a> </h3>
+				<p>{{ post.content }}</p>
+		</div>
+	{%endfor%}
+	{% if is_paginated %}
+		<div class="pagination mx-3 py-2 d-flex justify-content-center">
+			<span class="step-links">
+				{% if page_obj.has_previous %}
+						<a href="?page=1" class="btn btn-outline-info mx-1">&laquo; First</a>
+						<a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-info">Previous</a>
+				{% endif %}
+				{% for pn in page_obj.paginator.page_range %}
+					{% if pn == page_obj.number %}
+						<a href="#" class="btn btn-primary disabled">{{pn}}</a>
+					{%elif pn > page_obj.number|add:-3 and pn < page_obj.number|add:3 %}
+						<a href="?page={{pn}}" class="btn btn-outline-primary">{{pn}}</a>
+					{% endif %}
+				{% endfor %}
+				{% if page_obj.has_next %}
+						<a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-info mx-1">Next</a>
+						<a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-info">Last &raquo;</a>
+				{% endif %}
+			</span>
+		</div>
+	{% endif %}
+{% endblock content %}

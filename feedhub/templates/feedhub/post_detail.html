@@ -1,0 +1,19 @@
+{% extends "feedhub/base.html" %}
+{% block content %}
+	<div class="container mb-3 py-2 _stpbx border-top rounded shadow-sm">
+			<div class="d-inline-flex border-bottom mb-2 p-2">
+				<img class="_usrlg" width="50px" height="50px" src="{{object.author.profile.image.url}}" alt="profile_pic">
+				<div>
+					<h2><a href="{% url 'feedhub:user-posts' object.author.username %}">{{ object.author }}</a></h2>
+					<small>Posted on - {{ object.date_posted|date:"F j, Y"}}</small>
+				</div>
+				{% if user == object.author %}
+					<div class="mx-3">
+						<a href="{% url 'feedhub:feed-update' object.id %}" class="btn btn-info mx-1">Update</a>
+						<a href="{% url 'feedhub:feed-delete' object.id %}" class="btn btn-danger">Delete</a>
+					</div>
+				{%endif%}
+			</div>
+			<p>{{ object.content }}</p>
+	</div>
+{% endblock content %}

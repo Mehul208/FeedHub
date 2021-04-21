@@ -1,0 +1,83 @@
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'feedhub/main.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    {% if title %}
+      <title>{{title}}</title>
+    {% else %}
+      <title>FeedHub</title>
+    {%endif%}
+</head>
+<body style="background-color:rgba(0,0,0,0.1)">
+  <header class="bg-dark w-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 container">
+      <a class="navbar-brand" href="{% url 'feedhub:feed-home' %}">FeedHub</a>
+      <div class="collapse navbar-collapse d-flex flex-row-reverse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'feedhub:feed-home' %}">Home</a>
+          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'feedhub:feed-new' %}">Add Post</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'profile' %}">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'feedhub:feed-about' %}">About</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <main class="container py-3" style="background-color:rgba(255,255,255,0.8);height:auto;">
+    <div class="row">
+      <section class="container col-7">
+        {% if messages%}
+          {%for msg in messages%}
+            <div class="alert alert-{{msg.tags}} mt-3">
+              {{msg}}
+            </div>
+          {%endfor%}
+        {%endif%}
+        {%block content%}
+        {%endblock%}
+      </section>
+      {% if "login" in request.path or "password" in request.path or "register" in request.path %}
+        <section style="display:none;">
+          <div class="container m-2 p-1">
+            <h3 class="text-center">Search Bar</h3>
+          </div>
+        </section>
+      {%else%}
+        <section class="container col-3 border h-50">
+          <div class="container m-2 p-1">
+            <h3 class="text-center">Search Bar</h3>
+          </div>
+        </section>
+      {% endif %}
+    </div>
+  </main>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+</body>
+</html>
